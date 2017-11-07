@@ -3,22 +3,51 @@ import numpy as np
 
 #MAKE GRID
 grid = dict()
-for x in range(1, 6):
-    for y in range(1, 6):
+for x in range(1, 7):
+    for y in range(1, 7):
 	       grid[(x,y)] = 0
-
-
-print(grid)
-print()
 
 #INITIALIZE VEHICLES
 vehicles = dict()
 
 vehicles[1] = [(4,3),(5,3)]
+vehicles[2] = [(4,1),(5,1)]
+vehicles[3] = [(3,1),(3,2),(3,3)]
+vehicles[4] = [(2,5),(3,5)]
+vehicles[5] = [(5,6),(6,6)]
+vehicles[6] = [(4,4),(4,5),(4,6)]
+vehicles[7] = [(6,1),(6,2),(6,3)]
+vehicles[8] = [(5,4),(6,4)]
+vehicles[9] = [(1,5),(1,6)]
 
 #UPDATE GRID
 for vehicle in vehicles:
 	for positie in vehicles[vehicle]:
 		grid[positie] = vehicle
 
-print(grid)
+
+board = []
+row1 = []
+row2 = []
+row3 = []
+row4 = []
+row5 = []
+row6 = []
+
+for row in grid:
+    if row[1] == 1:
+        row1.append(grid[row])
+    elif row[1] == 2:
+        row2.append(grid[row])
+    elif row[1] == 3:
+        row3.append(grid[row])
+    elif row[1] == 4:
+        row4.append(grid[row])
+    elif row[1] == 5:
+        row5.append(grid[row])
+    elif row[1] == 6:
+        row6.append(grid[row])
+
+board = [row1,row2,row3,row4,row5,row6]
+
+print('\n'.join(' '.join(map(str, x)) for x in board))
