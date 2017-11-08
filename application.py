@@ -73,14 +73,12 @@ def moveUp(id):
 				vehicles[id] = [(x[0], x[1]-1) for x in vehicles[id]]
 				grid[ [(x[0], x[1]+1) for x in vehicles[id]][-1] ] = 0
 				print("To:", vehicles[id])
-		else:
-			print("Can't move")
+				updateGrid()
+				printGrid()
+
 
 
 moveUp(9)
-
-updateGrid()
-printGrid()
 
 
 def moveDown(id):
@@ -91,24 +89,19 @@ def moveDown(id):
 				vehicles[id] = [(x[0], x[1]+1) for x in vehicles[id]]
 				grid[ [(x[0], x[1]-1) for x in vehicles[id]][0] ] = 0
 				print("To:", vehicles[id])
-		else:
-			print("Can't move")
+				updateGrid()
+				printGrid()
+
 
 
 moveDown(3)
 
-updateGrid()
-printGrid()
 
 moveDown(9)
 
-updateGrid()
-printGrid()
 
 moveDown(9)
 
-updateGrid()
-printGrid()
 
 
 
