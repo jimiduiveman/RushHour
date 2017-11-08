@@ -15,51 +15,53 @@ vehicles[8] = [(5,4),(6,4)]
 vehicles[9] = [(1,5),(1,6)]
 
 #CREATE GRID
-def createGrid():
-    grid = dict()
-    for x in range(1, 7):
-        for y in range(1, 7):
-               grid[(x,y)] = 0
+grid = dict()
+for x in range(1, 7):
+	for y in range(1, 7):
+		grid[(x,y)] = 0
 
-    for vehicle in vehicles:
-    	for positie in vehicles[vehicle]:
-    		grid[positie] = vehicle
+for vehicle in vehicles:
+	for positie in vehicles[vehicle]:
+		grid[positie] = vehicle
 
-    board = []
-    row1 = []
-    row2 = []
-    row3 = []
-    row4 = []
-    row5 = []
-    row6 = []
+board = []
+row1 = []
+row2 = []
+row3 = []
+row4 = []
+row5 = []
+row6 = []
 
-    for row in grid:
-        if row[1] == 1:
-            row1.append(grid[row])
-        elif row[1] == 2:
-            row2.append(grid[row])
-        elif row[1] == 3:
-            row3.append(grid[row])
-        elif row[1] == 4:
-            row4.append(grid[row])
-        elif row[1] == 5:
-            row5.append(grid[row])
-        elif row[1] == 6:
-            row6.append(grid[row])
+for column in grid:
+	if column[1] == 1:
+		row1.append(grid[column])
+	elif column[1] == 2:
+		row2.append(grid[column])
+	elif column[1] == 3:
+		row3.append(grid[column])
+	elif column[1] == 4:
+		row4.append(grid[column])
+	elif column[1] == 5:
+		row5.append(grid[column])
+	elif column[1] == 6:
+		row6.append(grid[column])
 
-    board = [row1,row2,row3,row4,row5,row6]
+board = [row1,row2,row3,row4,row5,row6]
 
-    print('\n'.join(' '.join(map(str, x)) for x in board))
-
-createGrid()
+print('\n'.join(' '.join(map(str, x)) for x in board))
 
 def movingDirection(id):
-    if vehicles[id][0][0] == vehicles[id][1][0]:
-        print("verticaal")
-    else:
-        print("horizontaal")
+	if vehicles[id][0][0] == vehicles[id][1][0]:
+		return "vertical"
+	else:
+		return "horizontal"
 
-movingDirection(9)
+def moveUp(id):
+	if movingDirection(id) == "vertical":
+		if board[vehicles[id][0][1]-1][vehicles[id][1][0]-2] == 0:
+			vehicles[id][0][1] -= 1 # typeError: 'tuple' object does not support item assignment
+
+moveUp(9)
 
 
 
