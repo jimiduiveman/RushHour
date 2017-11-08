@@ -47,7 +47,6 @@ for column in grid:
 		row6.append(grid[column])
 
 board = [row1,row2,row3,row4,row5,row6]
-
 print('\n'.join(' '.join(map(str, x)) for x in board))
 
 def movingDirection(id):
@@ -59,7 +58,9 @@ def movingDirection(id):
 def moveUp(id):
 	if movingDirection(id) == "vertical":
 		if board[vehicles[id][0][1]-1][vehicles[id][1][0]-2] == 0:
-			vehicles[id][0][1] -= 1 # typeError: 'tuple' object does not support item assignment
+			print("Moved up from:", vehicles[id])
+			vehicles[id] = [(x[0], x[1]-1) for x in vehicles[id]]
+			print("To:", vehicles[id])
 
 moveUp(9)
 
