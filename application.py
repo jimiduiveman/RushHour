@@ -67,11 +67,14 @@ def movingDirection(id):
 
 def moveUp(id):
 	if movingDirection(id) == "vertical":
-		if grid[ (vehicles[id][0][0],vehicles[id][0][1]-1) ] == 0:
-			print("Vehicle",id,"Moved up from:", vehicles[id])
-			vehicles[id] = [(x[0], x[1]-1) for x in vehicles[id]]
-			grid[ [(x[0], x[1]+1) for x in vehicles[id]][-1] ] = 0
-			print("To:", vehicles[id])
+		if (vehicles[id][0][0],vehicles[id][0][1]-1) in grid:
+			if grid[ (vehicles[id][0][0],vehicles[id][0][1]-1) ] == 0:
+				print("Vehicle",id,"Moved up from:", vehicles[id])
+				vehicles[id] = [(x[0], x[1]-1) for x in vehicles[id]]
+				grid[ [(x[0], x[1]+1) for x in vehicles[id]][-1] ] = 0
+				print("To:", vehicles[id])
+		else:
+			print("Can't move")
 
 
 moveUp(9)
@@ -82,14 +85,22 @@ printGrid()
 
 def moveDown(id):
 	if movingDirection(id) == "vertical":
-		if grid[ (vehicles[id][-1][0],vehicles[id][-1][1]+1) ] == 0:
-			print("Vehicle",id,"Moved up from:", vehicles[id])
-			vehicles[id] = [(x[0], x[1]+1) for x in vehicles[id]]
-			grid[ [(x[0], x[1]-1) for x in vehicles[id]][0] ] = 0
-			print("To:", vehicles[id])
+		if (vehicles[id][-1][0],vehicles[id][-1][1]+1) in grid:
+			if grid[ (vehicles[id][-1][0],vehicles[id][-1][1]+1) ] == 0:
+				print("Vehicle",id,"Moved up from:", vehicles[id])
+				vehicles[id] = [(x[0], x[1]+1) for x in vehicles[id]]
+				grid[ [(x[0], x[1]-1) for x in vehicles[id]][0] ] = 0
+				print("To:", vehicles[id])
+		else:
+			print("Can't move")
 
 
 moveDown(3)
+
+updateGrid()
+printGrid()
+
+moveDown(9)
 
 updateGrid()
 printGrid()
