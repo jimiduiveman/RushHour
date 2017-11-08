@@ -1,12 +1,6 @@
 import numpy as np
 
 
-#MAKE GRID
-grid = dict()
-for x in range(1, 7):
-    for y in range(1, 7):
-	       grid[(x,y)] = 0
-
 #INITIALIZE VEHICLES
 vehicles = dict()
 
@@ -20,34 +14,61 @@ vehicles[7] = [(6,1),(6,2),(6,3)]
 vehicles[8] = [(5,4),(6,4)]
 vehicles[9] = [(1,5),(1,6)]
 
-#UPDATE GRID
-for vehicle in vehicles:
-	for positie in vehicles[vehicle]:
-		grid[positie] = vehicle
+#CREATE GRID
+def createGrid():
+    grid = dict()
+    for x in range(1, 7):
+        for y in range(1, 7):
+               grid[(x,y)] = 0
+
+    for vehicle in vehicles:
+    	for positie in vehicles[vehicle]:
+    		grid[positie] = vehicle
+
+    board = []
+    row1 = []
+    row2 = []
+    row3 = []
+    row4 = []
+    row5 = []
+    row6 = []
+
+    for row in grid:
+        if row[1] == 1:
+            row1.append(grid[row])
+        elif row[1] == 2:
+            row2.append(grid[row])
+        elif row[1] == 3:
+            row3.append(grid[row])
+        elif row[1] == 4:
+            row4.append(grid[row])
+        elif row[1] == 5:
+            row5.append(grid[row])
+        elif row[1] == 6:
+            row6.append(grid[row])
+
+    board = [row1,row2,row3,row4,row5,row6]
+
+    print('\n'.join(' '.join(map(str, x)) for x in board))
+
+createGrid()
+
+def movingDirection(id):
+    if vehicles[id][0][0] == vehicles[id][1][0]:
+        print("verticaal")
+    else:
+        print("horizontaal")
+
+movingDirection(9)
 
 
-board = []
-row1 = []
-row2 = []
-row3 = []
-row4 = []
-row5 = []
-row6 = []
 
-for row in grid:
-    if row[1] == 1:
-        row1.append(grid[row])
-    elif row[1] == 2:
-        row2.append(grid[row])
-    elif row[1] == 3:
-        row3.append(grid[row])
-    elif row[1] == 4:
-        row4.append(grid[row])
-    elif row[1] == 5:
-        row5.append(grid[row])
-    elif row[1] == 6:
-        row6.append(grid[row])
 
-board = [row1,row2,row3,row4,row5,row6]
 
-print('\n'.join(' '.join(map(str, x)) for x in board))
+
+
+
+
+
+
+
