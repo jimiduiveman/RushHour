@@ -20,34 +20,42 @@ for x in range(1, 7):
 	for y in range(1, 7):
 		grid[(x,y)] = 0
 
-for vehicle in vehicles:
-	for positie in vehicles[vehicle]:
-		grid[positie] = vehicle
+def updateGrid():
+	for vehicle in vehicles:
+		for positie in vehicles[vehicle]:
+			grid[positie] = vehicle
+	return grid
 
-board = []
-row1 = []
-row2 = []
-row3 = []
-row4 = []
-row5 = []
-row6 = []
+updateGrid()
 
-for column in grid:
-	if column[1] == 1:
-		row1.append(grid[column])
-	elif column[1] == 2:
-		row2.append(grid[column])
-	elif column[1] == 3:
-		row3.append(grid[column])
-	elif column[1] == 4:
-		row4.append(grid[column])
-	elif column[1] == 5:
-		row5.append(grid[column])
-	elif column[1] == 6:
-		row6.append(grid[column])
+def printGrid():
+	board = []
+	row1 = []
+	row2 = []
+	row3 = []
+	row4 = []
+	row5 = []
+	row6 = []
 
-board = [row1,row2,row3,row4,row5,row6]
-print('\n'.join(' '.join(map(str, x)) for x in board))
+	for column in grid:
+		if column[1] == 1:
+			row1.append(grid[column])
+		elif column[1] == 2:
+			row2.append(grid[column])
+		elif column[1] == 3:
+			row3.append(grid[column])
+		elif column[1] == 4:
+			row4.append(grid[column])
+		elif column[1] == 5:
+			row5.append(grid[column])
+		elif column[1] == 6:
+			row6.append(grid[column])
+
+	board = [row1,row2,row3,row4,row5,row6]
+	print('\n'.join(' '.join(map(str, x)) for x in board))
+
+printGrid()
+
 
 def movingDirection(id):
 	if vehicles[id][0][0] == vehicles[id][1][0]:
@@ -55,16 +63,21 @@ def movingDirection(id):
 	else:
 		return "horizontal"
 
+
+
 def moveUp(id):
 	if movingDirection(id) == "vertical":
-		if board[vehicles[id][0][1]-1][vehicles[id][1][0]-2] == 0:
+		if grid[ (vehicles[id][0][0],vehicles[id][0][1]-1) ] == 0:
 			print("Moved up from:", vehicles[id])
 			vehicles[id] = [(x[0], x[1]-1) for x in vehicles[id]]
+			grid[ [(x[0], x[1]+1) for x in vehicles[id]][-1] ] = 0
 			print("To:", vehicles[id])
+
 
 moveUp(9)
 
-
+updateGrid()
+printGrid()
 
 
 
