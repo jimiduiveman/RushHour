@@ -14,11 +14,12 @@ vehicles[7] = [(6,1),(6,2),(6,3)]
 vehicles[8] = [(5,4),(6,4)]
 vehicles[9] = [(1,5),(1,6)]
 
-
 #CREATE GRID
 grid = dict()
-for x in range(1, 7):
-	for y in range(1, 7):
+width = 6
+height = 6
+for x in range(1, width+1):
+	for y in range(1, height+1):
 		grid[(x,y)] = 0
 
 def updateGrid(grid:dict, vehicles:dict):
@@ -66,7 +67,7 @@ def movingDirection(id):
 
 
 def moveUp(grid:dict, id:int, moves:int): #layer 2 vereist vehicles als argument
-	print("moveUp")
+	print("{} can moveUp {}".format(id, moves))
 	copyGrid = dict(grid)
 	copyVehicles = dict(vehicles)
 	#print("Vehicle {} moved up from:".format(id), vehicles[id])
@@ -76,10 +77,11 @@ def moveUp(grid:dict, id:int, moves:int): #layer 2 vereist vehicles als argument
 	#copyGrid[ [(x[0], x[1]) for x in vehicles[id]] ] = 0
 	#print("To:", vehicles[id])
 	updateGrid(copyGrid, copyVehicles)
-	printGrid(copyGrid)
+	#printGrid(copyGrid)
 	return copyGrid, copyVehicles
 
 def moveDown(grid:dict, id:int, moves:int):
+	print("{} can moveDown {}".format(id, moves))
 	copyGrid = dict(grid)
 	copyVehicles = dict(vehicles)
 	#print("Vehicle {} moved down from:".format(id), vehicles[id])
@@ -88,36 +90,30 @@ def moveDown(grid:dict, id:int, moves:int):
 		copyGrid[(x[0], x[1])] = 0
 	#print("To:", vehicles[id])
 	updateGrid(copyGrid, copyVehicles)
-	printGrid(copyGrid)
+	#printGrid(copyGrid)
 	return copyGrid, copyVehicles
 
 def moveLeft(grid:dict, id:int, moves:int):
+	print("{} can moveLeft {}".format(id, moves))
 	copyGrid = dict(grid)
-	if movingDirection(id) == "horizontal":
-		if (vehicles[id][0][0]-1, vehicles[id][0][1]) in copyGrid:
-			if copyGrid[ (vehicles[id][0][0]-1, vehicles[id][0][1]) ] == 0:
-				print("Vehicle {} moved left from:".format(id), vehicles[id])
-				vehicles[id] = [(x[0]-1, x[1]) for x in vehicles[id]]
-				#print([(x[0]+1, x[1]) for x in vehicles[id][1]])
-				copyGrid[ [(x[0]+1, x[1]) for x in vehicles[id]][1] ] = 0
-				print("To:", vehicles[id])
-				#updateGrid(copyGrid)
-				printGrid(copyGrid)
-	return copyGrid
+	copyVehicles = dict(vehicles)
+	copyVehicles[id] = [(x[0]-moves, x[1]) for x in vehicles[id]]
+	for x in vehicles[id]:
+		copyGrid[(x[0], x[1])] = 0
+	updateGrid(copyGrid, copyVehicles)
+	#printGrid(copyGrid)
+	return copyGrid, copyVehicles
 
 def moveRight(grid:dict, id:int, moves:int):
+	print("{} can moveRight {}".format(id, moves))
 	copyGrid = dict(grid)
-	if movingDirection(id) == "horizontal":
-		if (vehicles[id][1][0]+1, vehicles[id][1][1]) in copyGrid:
-			if copyGrid[ (vehicles[id][1][0]+1, vehicles[id][1][1]) ] == 0:
-				print("Vehicle {} moved right from:".format(id), vehicles[id])
-				vehicles[id] = [(x[0]+1, x[1]) for x in vehicles[id]]
-				copyGrid[ [(x[0]-1, x[1]) for x in vehicles[id]][0] ] = 0
-				print("To:", vehicles[id])
-				#updateGrid(copyGrid)
-				printGrid(copyGrid)
-
-	return copyGrid
+	copyVehicles = dict(vehicles)
+	copyVehicles[id] = [(x[0]+moves, x[1]) for x in vehicles[id]]
+	for x in vehicles[id]:
+		copyGrid[(x[0], x[1])] = 0
+	updateGrid(copyGrid, copyVehicles)
+	#printGrid(copyGrid)
+	return copyGrid, copyVehicles
 
 def checkMovable(grid:dict):
 	possible = {}
@@ -137,7 +133,7 @@ def checkMovable(grid:dict):
 					break
 			#check if moveRight is possible
 			rightX_of_vehicle = vehicles[id][-1][0]
-			for x in range(rightX_of_vehicle+1,7):
+			for x in range(rightX_of_vehicle+1,width+1):
 				if grid[ (x, y_of_vehicle) ] == 0:
 					shift = rightX_of_vehicle - x
 					if id in possible:
@@ -161,7 +157,7 @@ def checkMovable(grid:dict):
 					break
 			#check if moveDown is possible
 			lowerY_of_vehicle = vehicles[id][-1][1]
-			for y in range(lowerY_of_vehicle+1,7):
+			for y in range(lowerY_of_vehicle+1,width+1):
 				if grid[ (x_of_vehicle, y) ] == 0:
 					shift = y - lowerY_of_vehicle
 					if id in possible:
@@ -175,7 +171,7 @@ def checkMovable(grid:dict):
 def isSolution(grid:dict):
 	rightX_of_redCar = vehicles[1][1][0]
 	y_of_redCar = vehicles[1][1][1]
-	for x in range(rightX_of_redCar+1,7):
+	for x in range(rightX_of_redCar+1,width+1):
 		if grid[(x,y_of_redCar)] != 0:
 			return False
 	return True
@@ -195,22 +191,53 @@ def getNeighborsForGrid(grid:dict):
 					neighbors.append(moveUp(grid, id, -move))
 				else:
 					neighbors.append(moveDown(grid, id, move))
-	#print(possibleMoves)
-	#for x in neighbors:
-	#	printGrid(x)
-	#	print()
-
-getNeighborsForGrid(grid)
+	return neighbors
 
 
-#solutionFound = isSolution(grid)
-#queue = [grid]
-#while solutionFound == False:
-#	newSituation = queue.pop()
-#	for possibleMove in  
+solutionFound = False
+queue = [grid]
+visited = []
+while solutionFound == False:
+	newSituation = queue.pop()
+	if isSolution(newSituation) == True:
+			print("Too easy! Your input is the solution!")
+			break
+	for possibleMove in getNeighborsForGrid(newSituation):
+		#updateGrid(possibleMove[0], possibleMove[1])
+		#printGrid(possibleMove[0])
+		#print()
+		if isSolution(possibleMove[0]) == True:
+			print("WINWINWIN")
+			#solutionFound = True
+			break
+		elif (possibleMove[0] not in visited):
+			queue.append(possibleMove[0])
+		else:
+			visited.append(possibleMove[0])
+		print(len(queue))
+	visited.append(newSituation)
+	print(len(visited))
+	
+	#print(len(queue))
+	#solutionFound = True
 
 
-
+# solutionFound = isSolution(grid)
+# queue = [grid]
+# visited = []
+# for x in range(1):
+# 	newSituation = queue.pop()
+# 	for possibleMove in getNeighborsForGrid(newSituation):
+# 		#print(possibleMove[0])
+# 		#print()
+# 		print()
+# 		if isSolution(possibleMove[0]) == True:
+# 			solutionFound = True
+# 		elif (possibleMove[0] not in queue):
+# 			queue.append(possibleMove[0])
+# 	visited.append(newSituation)
+# 	print(len(visited))
+# 	#print(queue)
 
 
 
