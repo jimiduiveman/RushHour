@@ -66,7 +66,7 @@ def movingDirection(id):
 		return "horizontal"
 
 
-def moveUp(grid:dict, id:int, moves:int): #layer 2 vereist vehicles als argument
+def moveUp(grid:dict, id:int, moves:int, vehicles:dict): #layer 2 vereist vehicles als argument
 	print("{} can moveUp {}".format(id, moves))
 	copyGrid = dict(grid)
 	copyVehicles = dict(vehicles)
@@ -80,7 +80,7 @@ def moveUp(grid:dict, id:int, moves:int): #layer 2 vereist vehicles als argument
 	#printGrid(copyGrid)
 	return copyGrid, copyVehicles
 
-def moveDown(grid:dict, id:int, moves:int):
+def moveDown(grid:dict, id:int, moves:int, vehicles:dict):
 	print("{} can moveDown {}".format(id, moves))
 	copyGrid = dict(grid)
 	copyVehicles = dict(vehicles)
@@ -93,7 +93,7 @@ def moveDown(grid:dict, id:int, moves:int):
 	#printGrid(copyGrid)
 	return copyGrid, copyVehicles
 
-def moveLeft(grid:dict, id:int, moves:int):
+def moveLeft(grid:dict, id:int, moves:int, vehicles:dict):
 	print("{} can moveLeft {}".format(id, moves))
 	copyGrid = dict(grid)
 	copyVehicles = dict(vehicles)
@@ -104,7 +104,7 @@ def moveLeft(grid:dict, id:int, moves:int):
 	#printGrid(copyGrid)
 	return copyGrid, copyVehicles
 
-def moveRight(grid:dict, id:int, moves:int):
+def moveRight(grid:dict, id:int, moves:int, vehicles:dict):
 	print("{} can moveRight {}".format(id, moves))
 	copyGrid = dict(grid)
 	copyVehicles = dict(vehicles)
@@ -115,14 +115,26 @@ def moveRight(grid:dict, id:int, moves:int):
 	#printGrid(copyGrid)
 	return copyGrid, copyVehicles
 
+def updateVehicles(grid:dict):
+	vehicles_dict = {}
+	for coordinate in grid:
+		id = grid[coordinate]
+		if id != 0:
+			if id not in vehicles_dict:
+				vehicles_dict[id] = [coordinate]
+			else:
+				vehicles_dict[id].append(coordinate)
+	return vehicles_dict
+
 def checkMovable(grid:dict):
+	updateVehicles(grid)
 	possible = {}
 	for id in vehicles:
 		if movingDirection(id) == "horizontal":
 			#check if moveLeft is possible
 			leftX_of_vehicle = vehicles[id][0][0]
 			y_of_vehicle = vehicles[id][0][1]
-			for x in reversed(range(1,leftX_of_vehicle)):
+			for x in reversed(range(1,leftX_of_vehicle-1)):
 				if grid[ (x, y_of_vehicle) ] == 0:
 					shift = x - leftX_of_vehicle
 					if id in possible:
@@ -146,7 +158,7 @@ def checkMovable(grid:dict):
 			#check if moveUp is possible
 			upperY_of_vehicle = vehicles[id][0][1]
 			x_of_vehicle = vehicles[id][0][0]
-			for y in reversed(range(1, upperY_of_vehicle)):
+			for y in reversed(range(1, upperY_of_vehicle-1)):
 				if grid[ (x_of_vehicle, y) ] == 0:
 					shift = y - upperY_of_vehicle
 					if id in possible:
@@ -176,47 +188,48 @@ def isSolution(grid:dict):
 			return False
 	return True
 
-def getNeighborsForGrid(grid:dict):
+def getNeighborsForGrid(grid:dict, vehicles:dict):
 	possibleMoves = checkMovable(grid)
 	neighbors = []
 	for id in possibleMoves:
 		for move in possibleMoves[id]:
 			if movingDirection(id) == "horizontal":
 				if move < 0:	
-					neighbors.append(moveLeft(grid, id, -move))
+					neighbors.append(moveLeft(grid, id, -move, updateVehicles(grid)))
 				else:
-					neighbors.append(moveRight(grid, id, move))
+					neighbors.append(moveRight(grid, id, move, updateVehicles(grid)))
 			else:
 				if move < 0:
-					neighbors.append(moveUp(grid, id, -move))
+					neighbors.append(moveUp(grid, id, -move, updateVehicles(grid)))
 				else:
-					neighbors.append(moveDown(grid, id, move))
+					neighbors.append(moveDown(grid, id, move, updateVehicles(grid)))
 	return neighbors
 
 
-solutionFound = False
+solutionFound = isSolution(grid)
 queue = [grid]
 visited = []
+count = 0
 while solutionFound == False:
-	newSituation = queue.pop()
-	if isSolution(newSituation) == True:
-			print("Too easy! Your input is the solution!")
-			break
-	for possibleMove in getNeighborsForGrid(newSituation):
+	newSituation = queue.pop(0)
+	print("Popped from queue:")
+	printGrid(newSituation)
+	for possibleMove in getNeighborsForGrid(newSituation, updateVehicles(newSituation)):
 		#updateGrid(possibleMove[0], possibleMove[1])
 		#printGrid(possibleMove[0])
 		#print()
 		if isSolution(possibleMove[0]) == True:
 			print("WINWINWIN")
-			#solutionFound = True
+			solutionFound = True
 			break
 		elif (possibleMove[0] not in visited):
 			queue.append(possibleMove[0])
 		else:
-			visited.append(possibleMove[0])
-		print(len(queue))
+			visited.append(newSituation)
 	visited.append(newSituation)
-	print(len(visited))
+	print("Queue:",len(queue))
+	print("Visited:",len(visited))
+	
 	
 	#print(len(queue))
 	#solutionFound = True
