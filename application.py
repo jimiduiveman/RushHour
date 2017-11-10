@@ -1,4 +1,5 @@
 import numpy as np
+from timeit import default_timer as timer
 
 
 #INITIALIZE VEHICLES
@@ -206,19 +207,24 @@ def getNeighborsForGrid(grid:dict, vehicles:dict):
 	return neighbors
 
 
+start = timer()
 solutionFound = isSolution(grid)
 queue = [grid]
 visited = []
-count = 0
+#levelDict = {}
 while solutionFound == False:
 	newSituation = queue.pop(0)
-	print("Popped from queue:")
+	print("")
 	printGrid(newSituation)
 	for possibleMove in getNeighborsForGrid(newSituation, updateVehicles(newSituation)):
 		#updateGrid(possibleMove[0], possibleMove[1])
 		#printGrid(possibleMove[0])
 		#print()
+		#level[newSituation] = possibleMove
 		if isSolution(possibleMove[0]) == True:
+			print(" ")
+			print("Final:")
+			printGrid(possibleMove[0])
 			print("WINWINWIN")
 			solutionFound = True
 			break
@@ -226,10 +232,12 @@ while solutionFound == False:
 			queue.append(possibleMove[0])
 		else:
 			visited.append(newSituation)
+
 	visited.append(newSituation)
-	print("Queue:",len(queue))
-	print("Visited:",len(visited))
-	
+#print(level)
+end = timer()
+
+print("Runtime:",round(end-start,4),"aka VERY FAST, GASSSSSSS")	
 	
 	#print(len(queue))
 	#solutionFound = True
