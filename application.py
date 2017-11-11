@@ -31,31 +31,14 @@ def updateGrid(grid:dict, vehicles:dict):
 
 updateGrid(grid, vehicles)
 
+
 def printGrid(grid):
-	board = []
-	row1 = []
-	row2 = []
-	row3 = []
-	row4 = []
-	row5 = []
-	row6 = []
-
-	for column in grid:
-		if column[1] == 1:
-			row1.append(grid[column])
-		elif column[1] == 2:
-			row2.append(grid[column])
-		elif column[1] == 3:
-			row3.append(grid[column])
-		elif column[1] == 4:
-			row4.append(grid[column])
-		elif column[1] == 5:
-			row5.append(grid[column])
-		elif column[1] == 6:
-			row6.append(grid[column])
-
-	board = [row1,row2,row3,row4,row5,row6]
-	print('\n'.join(' '.join(map(str, x)) for x in board))
+	values = list(grid.values())
+	for i,item in enumerate(values):
+	    if (i+1)%width == 0:
+	        print(item)
+	    else:
+	        print(item,end=' ')
 
 printGrid(grid)
 
