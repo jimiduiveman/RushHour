@@ -1,6 +1,6 @@
 ## Case: RUSH HOUR
 
-Dit project voor het vak 'Heuristieken' richt zich op het oplossen van de [Rush Hour] -spel (https://en.wikipedia.org/wiki/Rush_Hour_(board_game)).
+Dit project voor het vak 'Heuristieken' richt zich op het oplossen van de Rush Hour -spel.
 
 ** Voorwaarden van het bord **
 
@@ -12,18 +12,11 @@ Dit project voor het vak 'Heuristieken' richt zich op het oplossen van de [Rush 
 
 *voorbeeld van een bord*
 
-.,.,A,B,B,C
-.,.,A,.,.,C
-.,.,A,x,x,C
-.,.,.,D,E,E
-H,G,G,D,.,.
-H,.,.,D,F,F
-
-
+*Plaats hier voorbeeld*
 
 **Installatie**
 
-* Installeer [Python] (https://www.python.org/) 3.0 of hoger *
+* Installeer Python 3.0 of hoger *
 
 
 ## Algoritmen
