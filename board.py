@@ -12,7 +12,7 @@ class Board:
 		cmdargs = sys.argv
 		vehicles = dict()
 		y = 1
-		with open(cmdargs[1]) as file:
+		with open("boards/"+cmdargs[1]) as file:
 			for row in csv.reader(file):
 				dict_row = dict(enumerate(row))
 				for value in dict_row:

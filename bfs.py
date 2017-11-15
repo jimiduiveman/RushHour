@@ -12,6 +12,9 @@ while solutionFound == False:
 	print("")
 	Board.printGrid(newSituation)
 	for possibleMove in Board.getNeighborsForGrid(newSituation, Board.updateVehicles(newSituation)):
+		if len(queue) > 10000:
+			print("Queue length critical")
+			break
 		if Board.isSolution(possibleMove[0]) == True:
 			print(" ")
 			print("Final:")

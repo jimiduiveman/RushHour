@@ -1,0 +1,6 @@
+.,.,A,A,B,B
+.,C,C,D,D,E
+.,.,x,x,H,E
+F,F,G,G,H,E
+I,.,.,J,K,K
+I,.,.,J,L,L
