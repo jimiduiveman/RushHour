@@ -1,9 +1,0 @@
-A,A,B,B,C,.,.,D,.
-E,F,F,F,C,G,G,D,.
-E,.,H,H,I,J,.,K,K
-.,.,L,M,I,J,N,N,N
-x,x,L,M,.,.,.,.,.
-.,O,.,M,P,P,Q,Q,R
-S,O,T,T,U,X,X,X,R
-S,.,V,V,U,Y,Y,.,R
-S,W,W,W,U,.,.,.,.
