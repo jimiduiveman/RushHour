@@ -14,22 +14,21 @@ while solutionFound == False:
 	for possibleMove in Board.getNeighborsForGrid(newSituation, Board.updateVehicles(newSituation)):
 		if len(queue) > 10000:
 			print("Queue length critical")
+			solutionFound = True
 			break
 		if Board.isSolution(possibleMove[0]) == True:
 			print(" ")
 			print("Final:")
 			Board.printGrid(possibleMove[0])
 			print("WINWINWIN")
-			print(len(visited))
 			solutionFound = True
 			break
 		elif (possibleMove[0] not in visited) and (possibleMove[0] not in queue):
 			queue.append(possibleMove[0])
-		else:
-			visited.append(possibleMove[0])
-	visited.append(newSituation)
+	visited.insert(0,newSituation)
 end = timer()
 
+print(len(visited))
 
 if round(end-start,4) < 20:
 	print("Runtime:",round(end-start,4), "aka VERY FAST, GASSSS")	

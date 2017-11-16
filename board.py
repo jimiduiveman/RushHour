@@ -22,26 +22,27 @@ class Board:
 						else:
 							vehicles[dict_row[value]].append( ( value+1,y ) )
 				y += 1
-		return vehicles
+		y-=1
+		return vehicles,y
 
 
-	#CREATE EMPTY GRID
+	#CREATE EMPTY BOARD
 	grid = dict()
-	width = 6
-	height = 6
+	width = loadVehiclesFromFile()[1]
+	height = width
 	for x in range(1, width+1):
 		for y in range(1, height+1):
 			grid[(x,y)] = '.'
 
-	#PUT VEHICLES ON GRID
+	#PUT VEHICLES ON BOARD
 	def updateGrid(grid:dict, vehicles:dict):
 		for id in vehicles:
 			for positie in vehicles[id]:
 				grid[positie] = id
 		return grid
 
-	#PUT VEHICLES ON GRID FIRST TIME TO START
-	vehicles = loadVehiclesFromFile()
+	#PUT VEHICLES ON BOARD, FIRST TIME TO START
+	vehicles = loadVehiclesFromFile()[0]
 	updateGrid(grid, vehicles)
 
 
