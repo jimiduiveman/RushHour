@@ -2,7 +2,7 @@
 
 Dit project voor het vak 'Heuristieken' richt zich op het oplossen van de Rush Hour -spel.
 
-** Voorwaarden van het bord **
+**Voorwaarden van het bord**
 
 * Bordmaten kunnen variëren. (6x6, 9x9 & 12x12)
 * Het rode voertuig moet worden aangegeven met 'x'
@@ -16,7 +16,7 @@ Dit project voor het vak 'Heuristieken' richt zich op het oplossen van de Rush H
 
 **Installatie**
 
-* Installeer Python 3.0 of hoger *
+* Installeer Python 3.6 of hoger *
 
 
 ## Algoritmen
@@ -24,10 +24,10 @@ Dit project voor het vak 'Heuristieken' richt zich op het oplossen van de Rush H
 ** Opmerking ** <br>
 Grotere borden (9x9, 12x12) kunnen vereisen dat de algoritmen wat langere tijde gaat draaien (NU langste: 15 min)
 
-** Breadth First Search ** 
+**Breadth First Search** 
 
-** Depth First Search **
+**Depth First Search**
 
-* Jimi Duiveman (student #) <br>
-Rob Dekker (student #) <br>
-Andrea Pineda (student #) *
+* Jimi Duiveman (11023163) <br>
+* Rob Dekker (11020067) <br>
+* Andrea Pineda (10590501)
