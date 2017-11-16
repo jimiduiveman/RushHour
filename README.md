@@ -16,12 +16,12 @@ Dit project voor het vak 'Heuristieken' richt zich op het oplossen van de Rush H
 
 **Installatie**
 
-* Installeer Python 3.6 of hoger *
+* Installeer Python 3.6 of hoger
 
 
 ## Algoritmen
 
-** Opmerking ** <br>
+**Opmerking** <br>
 Grotere borden (9x9, 12x12) kunnen vereisen dat de algoritmen wat langere tijde gaat draaien (NU langste: 15 min)
 
 **Breadth First Search** 
