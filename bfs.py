@@ -1,40 +1,43 @@
 from board import Board
 from timeit import default_timer as timer
 
+def bfs():
+	start = timer()
+	solutionFound = Board.isSolution(Board.grid)
+	queue = [Board.grid]
+	visited = []
 
-start = timer()
-solutionFound = Board.isSolution(Board.grid)
-queue = [Board.grid]
-visited = []
+	while solutionFound == False:
+		newSituation = queue.pop(0)
+		print("")
+		Board.printGrid(newSituation)
+		for possibleMove in Board.getNeighborsForGrid(newSituation, Board.updateVehicles(newSituation)):
+			if len(queue) > 10000:
+				print("Queue length critical")
+				solutionFound = True
+				break
+			if Board.isSolution(possibleMove[0]) == True:
+				print(" ")
+				print("Final:")
+				Board.printGrid(possibleMove[0])
+				print("WINWINWIN")
+				solutionFound = True
+				break
+			elif (possibleMove[0] not in visited) and (possibleMove[0] not in queue):
+				queue.append(possibleMove[0])
+		visited.insert(0,newSituation)
+	end = timer()
 
-while solutionFound == False:
-	newSituation = queue.pop(0)
-	print("")
-	Board.printGrid(newSituation)
-	for possibleMove in Board.getNeighborsForGrid(newSituation, Board.updateVehicles(newSituation)):
-		if len(queue) > 10000:
-			print("Queue length critical")
-			solutionFound = True
-			break
-		if Board.isSolution(possibleMove[0]) == True:
-			print(" ")
-			print("Final:")
-			Board.printGrid(possibleMove[0])
-			print("WINWINWIN")
-			solutionFound = True
-			break
-		elif (possibleMove[0] not in visited) and (possibleMove[0] not in queue):
-			queue.append(possibleMove[0])
-	visited.insert(0,newSituation)
-end = timer()
+	print(len(visited))
 
-print(len(visited))
+	if round(end-start,4) < 20:
+		print("Runtime:",round(end-start,4), "aka VERY FAST, GASSSS")	
+	else:
+		print("Runtime:",round(end-start,4))
 
-if round(end-start,4) < 20:
-	print("Runtime:",round(end-start,4), "aka VERY FAST, GASSSS")	
-else:
-	print("Runtime:",round(end-start,4))
 
+if __name__ == "__main__":
+	bfs()
 
 # def loadVehiclesFromFile():
 # 	cmdargs = sys.argv
