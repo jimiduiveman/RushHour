@@ -1,19 +1,19 @@
-from classes.board import Board
+from board import Board
 from timeit import default_timer as timer
 
-def dfs():
+def bfs():
 	start = timer()
 	solutionFound = Board.isSolution(Board.grid)
-	stack = [(Board.grid,0)]
+	queue = [(Board.grid,0)]
 	visited = []
 
 	while solutionFound == False:
-		newSituation, layer = stack.pop(-1)
+		newSituation, layer = queue.pop(0)
 		print("")
 		Board.printGrid(newSituation)
 		for possibleMove in Board.getNeighborsForGrid(newSituation, Board.updateVehicles(newSituation)):
-			if len(stack) > 100000:
-				print("Stack length critical")
+			if len(queue) > 10000:
+				print("Queue length critical")
 				solutionFound = True
 				break
 			elif Board.isSolution(possibleMove[0]) == True:
@@ -21,11 +21,11 @@ def dfs():
 				print("Final:")
 				Board.printGrid(possibleMove[0])
 				print("WINWINWIN")
-				print("Total steps to solution:",layer+2)
+				print("Total steps to solution:",layer+1)
 				solutionFound = True
 				break
-			elif (possibleMove[0] not in visited) and ((possibleMove[0],layer+1) not in stack):
-				stack.append( (possibleMove[0],layer+1) )
+			elif (possibleMove[0] not in visited) and ((possibleMove[0],layer+1) not in queue):
+				queue.append( (possibleMove[0],layer+1) )
 		visited.insert(0,newSituation)
 	end = timer()
 
@@ -36,5 +36,4 @@ def dfs():
 
 
 if __name__ == "__main__":
-	dfs()
-
+	bfs()
