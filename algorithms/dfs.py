@@ -1,4 +1,4 @@
-from board import Board
+from classes.board import Board
 from timeit import default_timer as timer
 
 def dfs():
@@ -21,7 +21,7 @@ def dfs():
 				print("Final:")
 				Board.printGrid(possibleMove[0])
 				print("WINWINWIN")
-				print("Total steps to solution:",layer+1)
+				print("Total steps to solution:",layer+2)
 				solutionFound = True
 				break
 			elif (possibleMove[0] not in visited) and ((possibleMove[0],layer+1) not in stack):
