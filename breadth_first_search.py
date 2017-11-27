@@ -3,6 +3,8 @@ sys.path.append("/Users/jimiduiveman/Documents/Informatiekunde/Jaar3/Programmeer
 import csv
 from timeit import default_timer as timer
 
+from collections import deque
+
 
 class Vehicle:
 
@@ -27,9 +29,7 @@ class Board:
 		return string
 
 
-
 	def make_board(self):
-
 		#CREATE BOARD WITH DOT VALUES
 		board = []
 		for y in range(self.height+1):
@@ -47,13 +47,21 @@ class Board:
 
 	def print_board(self):
 		board = self.make_board()
-		for row in board:
-			print(row, sep=' ')
+		# for row in board:
+		# 	print(row, sep=' ')
+
+		values = [item for sublist in board for item in sublist]
+		for i,item in enumerate(values):
+		    if (i+1)% (self.width+1) == 0:
+		        print(item)
+		    else:
+		        print(item,end=' ')
 
 
 	def possibleBoards(self):
 		#WITH LITTLE INSPIRATION FROM: https://github.com/ryanwilsonperkin/rushhour
 		board = self.make_board()
+		vehicles = self.vehicles
 		possibleBoards = []
 		for vehicle in self.vehicles:
 			if vehicle.orientation == "HORIZONTAL":
@@ -64,12 +72,12 @@ class Board:
 					for x in reversed(range(leftX_of_vehicle)):
 						if board[y_of_vehicle][x] == '.':
 							shift = x - leftX_of_vehicle
-							new_coordinates = [ (x[0]+shift,y_of_vehicle) for x in vehicle.coordinates]
-							new_vehicle = Vehicle(vehicle.id, new_coordinates, vehicle.orientation)
-							new_vehicles = self.vehicles.copy()
-							new_vehicles.remove(vehicle)
-							new_vehicles.append(new_vehicle)
-							possibleBoards.append( Board(new_vehicles) )
+							newCoordinates = [ (x[0]+shift,y_of_vehicle) for x in vehicle.coordinates]
+							newVehicle = Vehicle(vehicle.id, newCoordinates, vehicle.orientation)
+							newVehicles = vehicles.copy()
+							newVehicles.remove(vehicle)
+							newVehicles.append(newVehicle)
+							possibleBoards.append( Board(newVehicles) )
 						else:
 							break
 				
@@ -78,12 +86,12 @@ class Board:
 					for x in range(rightX_of_vehicle+1, self.width+1):
 						if board[y_of_vehicle][x] == '.':
 							shift = x - rightX_of_vehicle
-							new_coordinates = [ (x[0]+shift,y_of_vehicle) for x in vehicle.coordinates]
-							new_vehicle = Vehicle(vehicle.id, new_coordinates, vehicle.orientation)
-							new_vehicles = self.vehicles.copy()
-							new_vehicles.remove(vehicle)
-							new_vehicles.append(new_vehicle)
-							possibleBoards.append( Board(new_vehicles) )
+							newCoordinates = [ (x[0]+shift,y_of_vehicle) for x in vehicle.coordinates]
+							newVehicle = Vehicle(vehicle.id, newCoordinates, vehicle.orientation)
+							newVehicles = vehicles.copy()
+							newVehicles.remove(vehicle)
+							newVehicles.append(newVehicle)
+							possibleBoards.append( Board(newVehicles) )
 						else:
 							break
 
@@ -95,12 +103,12 @@ class Board:
 					for y in reversed(range(upperY_of_vehicle)):
 						if board[y][x_of_vehicle] == '.':
 							shift = y -upperY_of_vehicle
-							new_coordinates = [ (x_of_vehicle,y[1]+shift) for y in vehicle.coordinates]
-							new_vehicle = Vehicle(vehicle.id, new_coordinates, vehicle.orientation)
-							new_vehicles = self.vehicles.copy()
-							new_vehicles.remove(vehicle)
-							new_vehicles.append(new_vehicle)
-							possibleBoards.append( Board(new_vehicles) )
+							newCoordinates = [ (x_of_vehicle,y[1]+shift) for y in vehicle.coordinates]
+							newVehicle = Vehicle(vehicle.id, newCoordinates, vehicle.orientation)
+							newVehicles = vehicles.copy()
+							newVehicles.remove(vehicle)
+							newVehicles.append(newVehicle)
+							possibleBoards.append( Board(newVehicles) )
 						else:
 							break
 
@@ -109,12 +117,12 @@ class Board:
 					for y in range(lowerY_of_vehicle+1,self.height+1):
 						if board[y][x_of_vehicle] == '.':
 							shift = y - lowerY_of_vehicle
-							new_coordinates = [ (x_of_vehicle,y[1]+shift) for y in vehicle.coordinates]
-							new_vehicle = Vehicle(vehicle.id, new_coordinates, vehicle.orientation)
-							new_vehicles = self.vehicles.copy()
-							new_vehicles.remove(vehicle)
-							new_vehicles.append(new_vehicle)
-							possibleBoards.append( Board(new_vehicles) )
+							newCoordinates = [ (x_of_vehicle,y[1]+shift) for y in vehicle.coordinates]
+							newVehicle = Vehicle(vehicle.id, newCoordinates, vehicle.orientation)
+							newVehicles = vehicles.copy()
+							newVehicles.remove(vehicle)
+							newVehicles.append(newVehicle)
+							possibleBoards.append( Board(newVehicles) )
 						else:
 							break
 		return possibleBoards
@@ -135,38 +143,38 @@ class Board:
 
 #FIRST TIME LOAD FILE AND CREATE A BOARD INSTANCE
 def load_from_file(filename):
-		vehicles = []
-		vehicles_dict = dict()
-		y = 0
-		with open(filename) as filename:
-			
-			#CREATE COORDINATES
-			for row in csv.reader(filename):
-				dict_row = dict(enumerate(row))
-				width = len(dict_row)
-				heigth = width
-				for value in dict_row:
-					if dict_row[value] != '.':
-						if dict_row[value] not in vehicles_dict:
-							vehicles_dict[dict_row[value]] = [( value,y )] 
-						else:
-							vehicles_dict[dict_row[value]].append( ( value,y ) )
-				y += 1
-		y -= 1
-		Board.height = y
-		Board.width = y
+	vehicles = []
+	vehicles_dict = dict()
+	y = 0
+	with open(filename) as filename:
+		
+		#CREATE COORDINATES
+		for row in csv.reader(filename):
+			dict_row = dict(enumerate(row))
+			width = len(dict_row)
+			heigth = width
+			for value in dict_row:
+				if dict_row[value] != '.':
+					if dict_row[value] not in vehicles_dict:
+						vehicles_dict[dict_row[value]] = [( value,y )] 
+					else:
+						vehicles_dict[dict_row[value]].append( ( value,y ) )
+			y += 1
+	y -= 1
+	Board.height = y
+	Board.width = y
 
-		for vehicle in vehicles_dict:
-			id = vehicle
-			coordinates = vehicles_dict[vehicle]
-			if coordinates[0][0] == coordinates[1][0]:
-				orientation = "VERTICAL"
-			else:
-				orientation = "HORIZONTAL"
-			
-			vehicles.append(Vehicle(id,coordinates,orientation))
+	for vehicle in vehicles_dict:
+		id = vehicle
+		coordinates = vehicles_dict[vehicle]
+		if coordinates[0][0] == coordinates[1][0]:
+			orientation = "VERTICAL"
+		else:
+			orientation = "HORIZONTAL"
+		
+		vehicles.append(Vehicle(id,coordinates,orientation))
 
-		return Board(vehicles)
+	return Board(vehicles)
 
 
 
@@ -178,19 +186,25 @@ def bfs(first_board):
 
 	start = timer()
 	solutionFound = first_board.isSolution()
-	queue = [first_board]
-	visited = []
+	queue = []
+	queue.append( first_board )
+	print("")
+	print("First Board:")
+	first_board.print_board()
+	visited = set()
 	layer = 0
 	while solutionFound == False:
-		newSituation = queue.pop(0)
-		print("")
-		newSituation.print_board()
+		newSituation = queue.pop(-1)
+		if layer%5000 == 0:
+			print("")
+			print("Progress:")
+			newSituation.print_board()
 		for possibleBoard in newSituation.possibleBoards():
-			if len(queue) > 100000:
-				print("Queue length critical")
-				solutionFound = True
-				break
-			elif possibleBoard.isSolution() == True:
+			# if len(queue) > 100000:
+			# 	print("Queue length critical")
+			# 	solutionFound = True
+			# 	break
+			if possibleBoard.isSolution() == True:
 				print(" ")
 				print("Final:")
 				possibleBoard.print_board()
@@ -199,9 +213,9 @@ def bfs(first_board):
 				break
 			elif (possibleBoard.__str__() not in visited):
 				queue.append( possibleBoard )
-				visited.insert(0, possibleBoard.__str__() )
+				visited.add( possibleBoard.__str__() )
 
-		visited.insert(0, newSituation.__str__() )
+		visited.add( newSituation.__str__() )
 		layer +=1
 
 	end = timer()

@@ -1,6 +1,6 @@
 ## Case: RUSH HOUR
 
-Dit project voor het vak 'Heuristieken' richt zich op het oplossen van de Rush Hour -spel.
+Dit project voor het vak 'Heuristieken' richt zich op het oplossen van het Rush Hour -spel.
 
 **Voorwaarden van het bord**
 
@@ -18,7 +18,7 @@ Dit project voor het vak 'Heuristieken' richt zich op het oplossen van de Rush H
 **Gebruik van een algoritme**
 
 ```
-python <ALGORTIME>.py <BOARD>.txt
+python algorithms/<ALGORTIME>.py <BOARD>.txt
 ```
 
 **Installatie**
