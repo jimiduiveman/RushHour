@@ -1,198 +1,165 @@
-import numpy as np
-import csv
 import sys
+sys.path.append("/Users/Drea/Desktop/Rush/")
+import csv
+from classes.vehicle import Vehicle
 
 class Board:
 
-	# def init(self):
-	# 	self.width = width
-
-	#LOAD VEHICLES FROM FILE
-	def loadVehiclesFromFile():
-		cmdargs = sys.argv
-		vehicles = dict()
-		y = 1
-		with open("boards/"+cmdargs[1]) as file:
-			for row in csv.reader(file):
-				dict_row = dict(enumerate(row))
-				for value in dict_row:
-					if dict_row[value] != '.':
-						if dict_row[value] not in vehicles:
-							vehicles[dict_row[value]] = [( value+1,y )] 
-						else:
-							vehicles[dict_row[value]].append( ( value+1,y ) )
-				y += 1
-		y-=1
-		return vehicles,y
+	def __init__(self, vehicles=None):
+		self.vehicles = vehicles
 
 
-	#CREATE EMPTY BOARD
-	grid = dict()
-	width = loadVehiclesFromFile()[1]
-	height = width
-	for x in range(1, width+1):
-		for y in range(1, height+1):
-			grid[(x,y)] = '.'
-
-	#PUT VEHICLES ON BOARD
-	def updateGrid(grid:dict, vehicles:dict):
-		for id in vehicles:
-			for positie in vehicles[id]:
-				grid[positie] = id
-		return grid
-
-	#PUT VEHICLES ON BOARD, FIRST TIME TO START
-	vehicles = loadVehiclesFromFile()[0]
-	updateGrid(grid, vehicles)
+	def __str__(self):
+		string = ""
+		for row in self.make_board():
+			for value in row:
+				string += value
+		return string
 
 
-	def printGrid(grid):
-		coordinates_sorted_y = sorted(grid.keys(), key=lambda tup: tup[1])
-		dict_sorted_y = {}
-		for key in coordinates_sorted_y:
-			dict_sorted_y[key] = grid[key]
-		values = list(dict_sorted_y.values())
+	def make_board(self):
+		#CREATE BOARD WITH DOT VALUES
+		board = []
+		for y in range(self.height+1):
+			board.append([])
+			for x in range(self.width+1):
+				board[y].append('.',)
 
+		#FILL BOARD WITH VEHICLES
+		for vehicle in self.vehicles:
+			coordinates = vehicle.coordinates
+			for coordinate in coordinates:
+				x,y = coordinate[0],coordinate[1]
+				board[y][x] = vehicle.id
+		return board
+
+	def print_board(self):
+		board = self.make_board()
+		# for row in board:
+		# 	print(row, sep=' ')
+
+		values = [item for sublist in board for item in sublist]
 		for i,item in enumerate(values):
-		    if (i+1)%Board.width == 0:
+		    if (i+1)% (self.width+1) == 0:
 		        print(item)
 		    else:
 		        print(item,end=' ')
 
-	#DETERMINE WHETHER VEHICLE CAN MOVE VERTICAL OR HORIZONTAL
-	def movingDirection(id):
-		if Board.vehicles[id][0][0] == Board.vehicles[id][1][0]:
-			return "vertical"
-		else:
-			return "horizontal"
 
-
-	def moveUp(grid:dict, id:int, move:int, vehicles:dict): #layer 2 vereist vehicles als argument
-		#print("{} can moveUp {}".format(id, move))
-		copyGrid = dict(grid)
-		copyVehicles = dict(vehicles)
-		#print("Vehicle {} moved up from:".format(id), vehicles[id])
-		copyVehicles[id] = [(x[0], x[1]-move) for x in vehicles[id]]
-		for x in vehicles[id]:
-			copyGrid[(x[0], x[1])] = '.'
-		Board.updateGrid(copyGrid, copyVehicles)
-		return copyGrid, copyVehicles
-
-	def moveDown(grid:dict, id:int, move:int, vehicles:dict):
-		copyGrid = dict(grid)
-		copyVehicles = dict(vehicles)
-		copyVehicles[id] = [(x[0], x[1]+move) for x in vehicles[id]]
-		for x in vehicles[id]:
-			copyGrid[(x[0], x[1])] = '.'
-		Board.updateGrid(copyGrid, copyVehicles)
-		return copyGrid, copyVehicles
-
-	def moveLeft(grid:dict, id:int, move:int, vehicles:dict):
-		copyGrid = dict(grid)
-		copyVehicles = dict(vehicles)
-		copyVehicles[id] = [(x[0]-move, x[1]) for x in vehicles[id]]
-		for x in vehicles[id]:
-			copyGrid[(x[0], x[1])] = '.'
-		Board.updateGrid(copyGrid, copyVehicles)
-		return copyGrid, copyVehicles
-
-	def moveRight(grid:dict, id:int, move:int, vehicles:dict):
-		copyGrid = dict(grid)
-		copyVehicles = dict(vehicles)
-		copyVehicles[id] = [(x[0]+move, x[1]) for x in vehicles[id]]
-		for x in vehicles[id]:
-			copyGrid[(x[0], x[1])] = '.'
-		Board.updateGrid(copyGrid, copyVehicles)
-		return copyGrid, copyVehicles
-
-	def updateVehicles(grid:dict):
-		vehicles_dict = {}
-		for coordinate in grid:
-			id = grid[coordinate]
-			if id != '.':
-				if id not in vehicles_dict:
-					vehicles_dict[id] = [coordinate]
-				else:
-					vehicles_dict[id].append(coordinate)
-		return vehicles_dict
-
-	def checkMovable(grid:dict):
-		vehicles_dict = Board.updateVehicles(grid)
-		possible = {}
-		for id in vehicles_dict:
-			if Board.movingDirection(id) == "horizontal":
-				leftX_of_vehicle = vehicles_dict[id][0][0]
-				y_of_vehicle = vehicles_dict[id][0][1]
-				if leftX_of_vehicle != 1:
-					for x in reversed(range(1,leftX_of_vehicle)):
-						if grid[ (x, y_of_vehicle) ] == '.':
+	def possibleBoards(self):
+		#WITH LITTLE INSPIRATION FROM: https://github.com/ryanwilsonperkin/rushhour
+		board = self.make_board()
+		vehicles = self.vehicles
+		possibleBoards = []
+		for vehicle in self.vehicles:
+			if vehicle.orientation == "HORIZONTAL":
+				
+				leftX_of_vehicle = vehicle.coordinates[0][0]
+				y_of_vehicle = vehicle.coordinates[0][1]
+				if leftX_of_vehicle > 0:
+					for x in reversed(range(leftX_of_vehicle)):
+						if board[y_of_vehicle][x] == '.':
 							shift = x - leftX_of_vehicle
-							if id in possible:
-								possible[id].append(shift)
-							else:
-								possible[id] = [shift]
+							newCoordinates = [ (x[0]+shift,y_of_vehicle) for x in vehicle.coordinates]
+							newVehicle = Vehicle(vehicle.id, newCoordinates, vehicle.orientation)
+							newVehicles = vehicles.copy()
+							newVehicles.remove(vehicle)
+							newVehicles.append(newVehicle)
+							possibleBoards.append( Board(newVehicles) )
 						else:
 							break
-				rightX_of_vehicle = vehicles_dict[id][-1][0]
-				if rightX_of_vehicle != Board.width:
-					for x in range(rightX_of_vehicle+1,Board.width+1):
-						if grid[ (x, y_of_vehicle) ] == '.':
+				
+				rightX_of_vehicle = vehicle.coordinates[-1][0]
+				if rightX_of_vehicle < self.width:
+					for x in range(rightX_of_vehicle+1, self.width+1):
+						if board[y_of_vehicle][x] == '.':
 							shift = x - rightX_of_vehicle
-							if id in possible:
-								possible[id].append(shift)
-							else:
-								possible[id] = [shift]
+							newCoordinates = [ (x[0]+shift,y_of_vehicle) for x in vehicle.coordinates]
+							newVehicle = Vehicle(vehicle.id, newCoordinates, vehicle.orientation)
+							newVehicles = vehicles.copy()
+							newVehicles.remove(vehicle)
+							newVehicles.append(newVehicle)
+							possibleBoards.append( Board(newVehicles) )
 						else:
 							break
-			elif Board.movingDirection(id) == "vertical":
-				upperY_of_vehicle = vehicles_dict[id][0][1]
-				x_of_vehicle = vehicles_dict[id][0][0]
-				if upperY_of_vehicle != 1:
-					for y in reversed(range(1, upperY_of_vehicle)):
-						if grid[ (x_of_vehicle, y) ] == '.':
-							shift = y - upperY_of_vehicle
-							if id in possible:
-								possible[id].append(shift)
-							else:
-								possible[id] = [shift]
-						else:
-							break
-				lowerY_of_vehicle = vehicles_dict[id][-1][1]
-				if lowerY_of_vehicle != Board.height:
-					for y in range(lowerY_of_vehicle+1,Board.width+1):
-						if grid[ (x_of_vehicle, y) ] == '.':
-							shift = y - lowerY_of_vehicle
-							if id in possible:
-								possible[id].append(shift)
-							else:
-								possible[id] = [shift]
-						else:
-							break
-		return possible
 
-	def isSolution(grid:dict):
-		vehicles_dict = Board.updateVehicles(grid)
-		rightX_of_redCar = vehicles_dict['x'][1][0]
-		y_of_redCar = vehicles_dict['x'][1][1]
-		for x in range(rightX_of_redCar+1, Board.width+1):
-			if grid[(x,y_of_redCar)] != '.':
+			elif vehicle.orientation == "VERTICAL":
+
+				upperY_of_vehicle = vehicle.coordinates[0][1]
+				x_of_vehicle = vehicle.coordinates[0][0]
+				if upperY_of_vehicle > 0:
+					for y in reversed(range(upperY_of_vehicle)):
+						if board[y][x_of_vehicle] == '.':
+							shift = y -upperY_of_vehicle
+							newCoordinates = [ (x_of_vehicle,y[1]+shift) for y in vehicle.coordinates]
+							newVehicle = Vehicle(vehicle.id, newCoordinates, vehicle.orientation)
+							newVehicles = vehicles.copy()
+							newVehicles.remove(vehicle)
+							newVehicles.append(newVehicle)
+							possibleBoards.append( Board(newVehicles) )
+						else:
+							break
+
+				lowerY_of_vehicle = vehicle.coordinates[-1][1]
+				if lowerY_of_vehicle < self.height:
+					for y in range(lowerY_of_vehicle+1,self.height+1):
+						if board[y][x_of_vehicle] == '.':
+							shift = y - lowerY_of_vehicle
+							newCoordinates = [ (x_of_vehicle,y[1]+shift) for y in vehicle.coordinates]
+							newVehicle = Vehicle(vehicle.id, newCoordinates, vehicle.orientation)
+							newVehicles = vehicles.copy()
+							newVehicles.remove(vehicle)
+							newVehicles.append(newVehicle)
+							possibleBoards.append( Board(newVehicles) )
+						else:
+							break
+		return possibleBoards
+
+	def isSolution(self):
+		board = self.make_board()
+		for vehicle in self.vehicles:
+			if vehicle.id == 'x':
+				rightX_of_redCar = vehicle.coordinates[-1][0]
+				y_of_redCar = vehicle.coordinates[0][1]
+		
+		for x in range(rightX_of_redCar+1, self.width+1):
+			if board[y_of_redCar][x] != '.':
 				return False
 		return True
 
-	def getNeighborsForGrid(grid:dict, vehicles:dict):
-		possibleMoves = Board.checkMovable(grid)
-		neighbors = []
-		for id in possibleMoves:
-			for move in possibleMoves[id]:
-				if Board.movingDirection(id) == "horizontal":
-					if move < 0:	
-						neighbors.append(Board.moveLeft(grid, id, -move, Board.updateVehicles(grid)))
-					else:
-						neighbors.append(Board.moveRight(grid, id, move, Board.updateVehicles(grid)))
-				else:
-					if move < 0:
-						neighbors.append(Board.moveUp(grid, id, -move, Board.updateVehicles(grid)))
-					else:
-						neighbors.append(Board.moveDown(grid, id, move, Board.updateVehicles(grid)))
-		return neighbors
 
+
+	#FIRST TIME LOAD FILE AND CREATE A BOARD INSTANCE
+	def load_from_file(filename):
+		vehicles = []
+		vehicles_dict = dict()
+		y = 0
+		with open(filename) as filename:
+			
+			#CREATE COORDINATES
+			for row in csv.reader(filename):
+				dict_row = dict(enumerate(row))
+				width = len(dict_row)
+				heigth = width
+				for value in dict_row:
+					if dict_row[value] != '.':
+						if dict_row[value] not in vehicles_dict:
+							vehicles_dict[dict_row[value]] = [( value,y )] 
+						else:
+							vehicles_dict[dict_row[value]].append( ( value,y ) )
+				y += 1
+		y -= 1
+		Board.height = y
+		Board.width = y
+
+		for vehicle in vehicles_dict:
+			id = vehicle
+			coordinates = vehicles_dict[vehicle]
+			if coordinates[0][0] == coordinates[1][0]:
+				orientation = "VERTICAL"
+			else:
+				orientation = "HORIZONTAL"
+			
+			vehicles.append(Vehicle(id,coordinates,orientation))
+
+		return Board(vehicles)
