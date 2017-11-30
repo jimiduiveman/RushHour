@@ -30,7 +30,6 @@ def bfs(first_board):
 				print(" ")
 				print("Final:")
 				possibleBoard.print_board()
-				print(possibleBoard.layer+1) #+1 for final move out of board
 				print("WINWINWIN")
 				solutionFound = True
 				break
@@ -50,6 +49,19 @@ def bfs(first_board):
 	else:
 		print("Runtime:",round(end-start,4))
 
+
+
+
+	#PATH
+	path = [possibleBoard]
+	while possibleBoard.parent != 0:
+		path.insert(0, possibleBoard.parent )
+		possibleBoard = possibleBoard.parent
+
+	print("Path to solution with length:", len(path))
+	for board in path:
+		board.print_board()
+		print("")
 
 
 if __name__ == "__main__":

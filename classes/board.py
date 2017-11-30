@@ -5,10 +5,10 @@ from classes.vehicle import Vehicle
 
 class Board:
 
-	def __init__(self, vehicles=None, layer=None):
+	def __init__(self, vehicles=None, parent=None):
 		self.vehicles = vehicles
 		self.board = self.make_board()
-		self.layer = layer
+		self.parent = parent
 
 
 	def __str__(self):
@@ -67,7 +67,7 @@ class Board:
 							newVehicles = vehicles.copy()
 							newVehicles.remove(vehicle)
 							newVehicles.append(newVehicle)
-							possibleBoards.append( Board(newVehicles, self.layer+1) )
+							possibleBoards.append( Board(newVehicles, parent=self) )
 						else:
 							break
 				
@@ -81,7 +81,7 @@ class Board:
 							newVehicles = vehicles.copy()
 							newVehicles.remove(vehicle)
 							newVehicles.append(newVehicle)
-							possibleBoards.append( Board(newVehicles, self.layer+1) )
+							possibleBoards.append( Board(newVehicles, parent=self) )
 						else:
 							break
 
@@ -98,7 +98,7 @@ class Board:
 							newVehicles = vehicles.copy()
 							newVehicles.remove(vehicle)
 							newVehicles.append(newVehicle)
-							possibleBoards.append( Board(newVehicles, self.layer+1) )
+							possibleBoards.append( Board(newVehicles, parent=self) )
 						else:
 							break
 
@@ -112,7 +112,7 @@ class Board:
 							newVehicles = vehicles.copy()
 							newVehicles.remove(vehicle)
 							newVehicles.append(newVehicle)
-							possibleBoards.append( Board(newVehicles, self.layer+1) )
+							possibleBoards.append( Board(newVehicles, parent=self) )
 						else:
 							break
 		return possibleBoards
