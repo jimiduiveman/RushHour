@@ -1,5 +1,5 @@
 import sys
-sys.path.append("/Users/Drea/Desktop/Rush/")
+sys.path.append("/Users/jimiduiveman/Documents/Informatiekunde/Jaar3/ProgrammeerTheorie/RushHour/")
 
 class Vehicle:
 

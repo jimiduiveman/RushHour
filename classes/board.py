@@ -1,12 +1,14 @@
 import sys
-sys.path.append("/Users/Drea/Desktop/Rush/")
+sys.path.append("/Users/jimiduiveman/Documents/Informatiekunde/Jaar3/ProgrammeerTheorie/RushHour/")
 import csv
 from classes.vehicle import Vehicle
 
 class Board:
 
-	def __init__(self, vehicles=None):
+	def __init__(self, vehicles=None, layer=None):
 		self.vehicles = vehicles
+		self.board = self.make_board()
+		self.layer = layer
 
 
 	def __str__(self):
@@ -34,11 +36,11 @@ class Board:
 		return board
 
 	def print_board(self):
-		board = self.make_board()
+		#board = self.make_board()
 		# for row in board:
 		# 	print(row, sep=' ')
 
-		values = [item for sublist in board for item in sublist]
+		values = [item for sublist in self.board for item in sublist]
 		for i,item in enumerate(values):
 		    if (i+1)% (self.width+1) == 0:
 		        print(item)
@@ -48,7 +50,7 @@ class Board:
 
 	def possibleBoards(self):
 		#WITH LITTLE INSPIRATION FROM: https://github.com/ryanwilsonperkin/rushhour
-		board = self.make_board()
+		#board = self.make_board()
 		vehicles = self.vehicles
 		possibleBoards = []
 		for vehicle in self.vehicles:
@@ -58,28 +60,28 @@ class Board:
 				y_of_vehicle = vehicle.coordinates[0][1]
 				if leftX_of_vehicle > 0:
 					for x in reversed(range(leftX_of_vehicle)):
-						if board[y_of_vehicle][x] == '.':
+						if self.board[y_of_vehicle][x] == '.':
 							shift = x - leftX_of_vehicle
 							newCoordinates = [ (x[0]+shift,y_of_vehicle) for x in vehicle.coordinates]
 							newVehicle = Vehicle(vehicle.id, newCoordinates, vehicle.orientation)
 							newVehicles = vehicles.copy()
 							newVehicles.remove(vehicle)
 							newVehicles.append(newVehicle)
-							possibleBoards.append( Board(newVehicles) )
+							possibleBoards.append( Board(newVehicles, self.layer+1) )
 						else:
 							break
 				
 				rightX_of_vehicle = vehicle.coordinates[-1][0]
 				if rightX_of_vehicle < self.width:
 					for x in range(rightX_of_vehicle+1, self.width+1):
-						if board[y_of_vehicle][x] == '.':
+						if self.board[y_of_vehicle][x] == '.':
 							shift = x - rightX_of_vehicle
 							newCoordinates = [ (x[0]+shift,y_of_vehicle) for x in vehicle.coordinates]
 							newVehicle = Vehicle(vehicle.id, newCoordinates, vehicle.orientation)
 							newVehicles = vehicles.copy()
 							newVehicles.remove(vehicle)
 							newVehicles.append(newVehicle)
-							possibleBoards.append( Board(newVehicles) )
+							possibleBoards.append( Board(newVehicles, self.layer+1) )
 						else:
 							break
 
@@ -89,41 +91,41 @@ class Board:
 				x_of_vehicle = vehicle.coordinates[0][0]
 				if upperY_of_vehicle > 0:
 					for y in reversed(range(upperY_of_vehicle)):
-						if board[y][x_of_vehicle] == '.':
+						if self.board[y][x_of_vehicle] == '.':
 							shift = y -upperY_of_vehicle
 							newCoordinates = [ (x_of_vehicle,y[1]+shift) for y in vehicle.coordinates]
 							newVehicle = Vehicle(vehicle.id, newCoordinates, vehicle.orientation)
 							newVehicles = vehicles.copy()
 							newVehicles.remove(vehicle)
 							newVehicles.append(newVehicle)
-							possibleBoards.append( Board(newVehicles) )
+							possibleBoards.append( Board(newVehicles, self.layer+1) )
 						else:
 							break
 
 				lowerY_of_vehicle = vehicle.coordinates[-1][1]
 				if lowerY_of_vehicle < self.height:
 					for y in range(lowerY_of_vehicle+1,self.height+1):
-						if board[y][x_of_vehicle] == '.':
+						if self.board[y][x_of_vehicle] == '.':
 							shift = y - lowerY_of_vehicle
 							newCoordinates = [ (x_of_vehicle,y[1]+shift) for y in vehicle.coordinates]
 							newVehicle = Vehicle(vehicle.id, newCoordinates, vehicle.orientation)
 							newVehicles = vehicles.copy()
 							newVehicles.remove(vehicle)
 							newVehicles.append(newVehicle)
-							possibleBoards.append( Board(newVehicles) )
+							possibleBoards.append( Board(newVehicles, self.layer+1) )
 						else:
 							break
 		return possibleBoards
 
 	def isSolution(self):
-		board = self.make_board()
+		#board = self.make_board()
 		for vehicle in self.vehicles:
 			if vehicle.id == 'x':
 				rightX_of_redCar = vehicle.coordinates[-1][0]
 				y_of_redCar = vehicle.coordinates[0][1]
 		
 		for x in range(rightX_of_redCar+1, self.width+1):
-			if board[y_of_redCar][x] != '.':
+			if self.board[y_of_redCar][x] != '.':
 				return False
 		return True
 
@@ -162,4 +164,4 @@ class Board:
 			
 			vehicles.append(Vehicle(id,coordinates,orientation))
 
-		return Board(vehicles)
+		return Board(vehicles,0)
