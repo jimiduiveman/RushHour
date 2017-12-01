@@ -12,7 +12,6 @@ def bfs(first_board):
 	queue.append( first_board )
 	print("")
 	print("First Board:")
-	first_board.print_board()
 	visited = set()
 	number_of_boards = 0
 
@@ -21,7 +20,6 @@ def bfs(first_board):
 
 		if number_of_boards%5000 == 0:
 			print("")
-			print("Progress:")
 			newSituation.print_board()
 		
 		for possibleBoard in newSituation.possibleBoards():
@@ -31,6 +29,7 @@ def bfs(first_board):
 				print("Final:")
 				possibleBoard.print_board()
 				print("WINWINWIN")
+				print(possibleBoard.layer)
 				solutionFound = True
 				break
 
@@ -58,7 +57,7 @@ def bfs(first_board):
 		path.insert(0, possibleBoard.parent )
 		possibleBoard = possibleBoard.parent
 
-	print("Path to solution with length:", len(path))
+	print("Path to solution with length:", len(path) -1) #1 stap minder want begin bord telt niet mee
 	for board in path:
 		board.print_board()
 		print("")
