@@ -5,10 +5,11 @@ from classes.vehicle import Vehicle
 
 class Board:
 
-	def __init__(self, vehicles=None, parent=None):
+	def __init__(self, vehicles=None, parent=None, layer=0):
 		self.vehicles = vehicles
 		self.board = self.make_board()
 		self.parent = parent
+		self.layer = layer
 
 
 	def __str__(self):
@@ -67,7 +68,7 @@ class Board:
 							newVehicles = vehicles.copy()
 							newVehicles.remove(vehicle)
 							newVehicles.append(newVehicle)
-							possibleBoards.append( Board(newVehicles, parent=self) )
+							possibleBoards.append( Board(newVehicles, self, self.layer+1 ) )
 						else:
 							break
 				
@@ -81,11 +82,12 @@ class Board:
 							newVehicles = vehicles.copy()
 							newVehicles.remove(vehicle)
 							newVehicles.append(newVehicle)
-							possibleBoards.append( Board(newVehicles, parent=self) )
+							possibleBoards.append( Board(newVehicles, self, self.layer+1 ) )
 						else:
 							break
 
-			elif vehicle.orientation == "VERTICAL":
+			#VERTICAL
+			else:
 
 				upperY_of_vehicle = vehicle.coordinates[0][1]
 				x_of_vehicle = vehicle.coordinates[0][0]
@@ -98,7 +100,7 @@ class Board:
 							newVehicles = vehicles.copy()
 							newVehicles.remove(vehicle)
 							newVehicles.append(newVehicle)
-							possibleBoards.append( Board(newVehicles, parent=self) )
+							possibleBoards.append( Board(newVehicles, self, self.layer+1 ) )
 						else:
 							break
 
@@ -112,7 +114,7 @@ class Board:
 							newVehicles = vehicles.copy()
 							newVehicles.remove(vehicle)
 							newVehicles.append(newVehicle)
-							possibleBoards.append( Board(newVehicles, parent=self) )
+							possibleBoards.append( Board(newVehicles, self, self.layer+1 ) )
 						else:
 							break
 		return possibleBoards

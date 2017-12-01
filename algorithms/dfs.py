@@ -16,7 +16,7 @@ def dfs(first_board):
 	visited = set()
 	number_of_boards = 0
 
-	while solutionFound == False:
+	while solutionFound == False and stack != []:
 		newSituation = stack.pop(-1)
 
 		if number_of_boards%5000 == 0:
@@ -34,7 +34,7 @@ def dfs(first_board):
 				solutionFound = True
 				break
 
-			elif (possibleBoard.__str__() not in visited):
+			elif (possibleBoard.__str__() not in visited and possibleBoard.layer < 500):
 				stack.append( possibleBoard )
 				visited.add( possibleBoard.__str__() )
 
