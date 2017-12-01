@@ -1,5 +1,6 @@
-import sys
-sys.path.append("/Users/jimiduiveman/Documents/Informatiekunde/Jaar3/ProgrammeerTheorie/RushHour/")
+import os, sys
+parentDir = os.path.abspath('.')
+sys.path.insert(0, parentDir)
 import csv
 from timeit import default_timer as timer
 from classes.board import Board

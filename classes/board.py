@@ -1,5 +1,3 @@
-import sys
-sys.path.append("/Users/jimiduiveman/Documents/Informatiekunde/Jaar3/ProgrammeerTheorie/RushHour/")
 import csv
 from classes.vehicle import Vehicle
 
