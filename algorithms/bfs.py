@@ -30,7 +30,6 @@ def bfs(first_board):
 				print("Final:")
 				possibleBoard.print_board()
 				print("WINWINWIN")
-				print(possibleBoard.layer)
 				solutionFound = True
 				break
 
@@ -53,15 +52,13 @@ def bfs(first_board):
 
 
 	#PATH
-	path = [possibleBoard]
+	path = [possibleBoard.__str__()]
 	while possibleBoard.parent != 0:
-		path.insert(0, possibleBoard.parent )
+		path.insert(0, possibleBoard.parent.__str__() )
 		possibleBoard = possibleBoard.parent
 
+	print(path)
 	print("Path to solution with length:", len(path) -1) #1 stap minder want begin bord telt niet mee
-	for board in path:
-		board.print_board()
-		print("")
 
 
 if __name__ == "__main__":

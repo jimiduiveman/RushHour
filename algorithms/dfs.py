@@ -18,6 +18,7 @@ def dfs(first_board):
 
 	while solutionFound == False and stack != []:
 		newSituation = stack.pop(-1)
+		visited.add( newSituation.__str__() )
 
 		if number_of_boards%5000 == 0:
 			print("")
@@ -30,15 +31,13 @@ def dfs(first_board):
 				print("Final:")
 				possibleBoard.print_board()
 				print("WINWINWIN")
-				print(possibleBoard.layer)
 				solutionFound = True
 				break
 
-			elif ( (possibleBoard.__str__(), possibleBoard.layer) not in visited and possibleBoard.layer < 250):
+			elif ( possibleBoard.__str__() not in visited ):
 				stack.append( possibleBoard )
-				visited.add( (possibleBoard.__str__(), possibleBoard.layer) )
+				visited.add( possibleBoard.__str__() )
 
-		visited.add( (newSituation.__str__(), newSituation.layer) )
 		number_of_boards +=1
 
 	end = timer()
@@ -51,15 +50,13 @@ def dfs(first_board):
 
 
 	#PATH
-	path = [possibleBoard]
+	path = [possibleBoard.__str__()]
 	while possibleBoard.parent != 0:
-		path.insert(0, possibleBoard.parent )
+		path.insert(0, possibleBoard.parent.__str__() )
 		possibleBoard = possibleBoard.parent
 
+	print(path)
 	print("Path to solution with length:", len(path)-1) #voor begin bord, is geen stap
-	for board in path:
-		board.print_board()
-		print("")
 
 
 if __name__ == "__main__":
