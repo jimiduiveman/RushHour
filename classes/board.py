@@ -20,11 +20,7 @@ class Board:
 
 	def make_board(self):
 		#CREATE BOARD WITH DOT VALUES
-		board = []
-		for y in range(self.height+1):
-			board.append([])
-			for x in range(self.width+1):
-				board[y].append('.',)
+		board = [['.']*(self.width+1) for i in range((self.height+1))]
 
 		#FILL BOARD WITH VEHICLES
 		for vehicle in self.vehicles:
