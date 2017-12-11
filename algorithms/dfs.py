@@ -55,7 +55,7 @@ def dfs(first_board):
 		path.insert(0, possibleBoard.parent.__str__() )
 		possibleBoard = possibleBoard.parent
 
-	print(path)
+	print(len(path))
 	print("Path to solution with length:", len(path)-1) #voor begin bord, is geen stap
 
 

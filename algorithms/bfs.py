@@ -52,14 +52,16 @@ def bfs(first_board):
 
 
 	#PATH
-	path = [possibleBoard.__str__()]
+	path = [possibleBoard]
 	while possibleBoard.parent != 0:
-		path.insert(0, possibleBoard.parent.__str__() )
+		path.insert(0, possibleBoard.parent )
 		possibleBoard = possibleBoard.parent
 
-	print(path)
 	print("Path to solution with length:", len(path) -1) #1 stap minder want begin bord telt niet mee
-
+	
+	# for x in path:
+	# 	print("")
+	# 	x.print_board()
 
 if __name__ == "__main__":
 	filename = "boards/"+sys.argv[1]
