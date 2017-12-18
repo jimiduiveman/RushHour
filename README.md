@@ -66,6 +66,11 @@ Hierbij staat "c" voor het **aantal auto's** op het bord en "d" voor het **aanta
 | Bigger board 3 | 8<sup>18</sup> &ast; 7<sup>8</sup> = 1,038 &ast; 10<sup>23</sup> mogelijkheden       |
 | Biggest board  | 11<sup>28</sup> &ast; 10<sup>16</sup> = 1,44 &ast; 10<sup>45</sup> mogelijkheden     |
 
+## Visualisatie
+* Optioneel kan de gebruiker ervoor kiezen om de visualisatie te zien, de gebruiker krijgt dan na het runnen van het algoritme de vraag of hij/zij de visualisatie wilt runnen. Dit kan worden gedaan door het typen van een "y" op de terminal.
+* Het voorbeeld wat wordt weergegeven is de visualisatie van de BFS met board1.txt:
+<img src="https://github.com/jimiduiveman/RushHour/blob/master/doc/bfs_demo.gif" width="220" height="220" />
+
 ## Algoritme Resultaten
 * Grotere borden (9x9, 12x12) kunnen vereisen dat de algoritmen BFS & DFS wat langere tijd gaan draaien (NU langste: 5 uur).
 * De runtime wordt aangegeven in seconden:
@@ -91,4 +96,4 @@ Hierbij staat "c" voor het **aantal auto's** op het bord en "d" voor het **aanta
 * Rob Dekker (11020067)
 * Andrea Pineda (10590501)
 
-![Logo GASSS](https://github.com/jimiduiveman/RushHour/blob/master/logo2.png)
+![Logo GASSS](https://github.com/jimiduiveman/RushHour/blob/master/doc/logo2.png)
