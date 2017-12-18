@@ -82,7 +82,7 @@ Hierbij staat "c" voor het **aantal auto's** op het bord en "d" voor het **aanta
 | Board 3        | 0.2         | 1,5         | < 80                         |
 | Bigger board 1 | 145         | 1064,5      | < 80                         |
 | Bigger board 2 | > 18000     | 1172        | < 80                         |
-| Bigger board 3 | > 18000     | 370         | < 80                         |
+| Bigger board 3 | > 18000     | > 18000     | < 80                         |
 | Biggest board  | > 18000     | > 18000     | < 80                         |
 
 * <sup>1</sup>Runtime Random Search varieert omdat het random is, echter is er bijna altijd een oplossing binnen 120 seconden.
