@@ -75,15 +75,15 @@ Hierbij staat "c" voor het **aantal auto's** op het bord en "d" voor het **aanta
 * Grotere borden (9x9, 12x12) kunnen vereisen dat de algoritmen BFS & DFS wat langere tijd gaan draaien (NU langste: 5 uur).
 * De runtime wordt aangegeven in seconden:
 
-| Board          | BFS Runtime | DFS Runtime |  Random Runtime<sup>1</sup> |
-|:---------------|:------------|:------------|:----------------------------|
-| Board 1        | 4.1         | 0.8         | < 120                       |
-| Board 2        | 0.8         | 0.5         | < 120                       |
-| Board 3        | 0.2         | 0.07        | < 120                       |
-| Bigger board 1 | 250         | 23.1        | < 120                       |
-| Bigger board 2 | > 18000     | 1172        | < 120                       |
-| Bigger board 3 | > 18000     | 370         | < 120                       |
-| Biggest board  | > 18000     | > 18000     | < 120                       |
+| Board          | BFS Runtime | DFS Runtime |  Random Runtime<sup>1</sup>  |
+|:---------------|:------------|:------------|:-----------------------------|
+| Board 1        | 2,9         | 76,8        | < 80                         |
+| Board 2        | 0.6         | 1,8         | < 80                         |
+| Board 3        | 0.2         | 1,5         | < 80                         |
+| Bigger board 1 | 145         | 1064,5      | < 80                         |
+| Bigger board 2 | > 18000     | 1172        | < 80                         |
+| Bigger board 3 | > 18000     | 370         | < 80                         |
+| Biggest board  | > 18000     | > 18000     | < 80                         |
 
 * <sup>1</sup>Runtime Random Search varieert omdat het random is, echter is er bijna altijd een oplossing binnen 120 seconden.
  
