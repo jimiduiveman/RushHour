@@ -39,7 +39,7 @@ def dfs(first_board):
 		visited.add( (newSituation.__str__(), newSituation.layer) )
 
 		#Print the number of visited boards when searching for the solution every 1000 boards
-		if number_of_boards%1000 == 0 and number_of_boards > 0:
+		if number_of_boards%10 == 0 and number_of_boards > 0:
 			progress(newSituation.layer)
 
 		for possibleBoard in newSituation.possibleBoards():
@@ -52,7 +52,7 @@ def dfs(first_board):
 				break
 			
 			#If current board is not the final one: 
-			elif newSituation.layer < 40:
+			elif newSituation.layer < 99:
 				if ( (possibleBoard.__str__(),possibleBoard.layer ) not in visited ):
 				
 					#1. add it to the stack
@@ -60,6 +60,10 @@ def dfs(first_board):
 					
 					#2. add a string representation of it to the set of visited boards
 					visited.add( (possibleBoard.__str__(), possibleBoard.layer) )
+
+			#Algorithm dives into a whole other branch of the "tree"
+			elif number_of_boards%10000 == 0 and number_of_boards != 0:
+			 	stack.append(first_board)
 
 		number_of_boards +=1
 	
